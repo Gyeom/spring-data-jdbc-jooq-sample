@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<configuration> <!-- JDBC connection parameters -->
+    <jdbc>
+        <driver>org.h2.Driver</driver>
+        <url>
+            jdbc:h2:~/test
+        </url>
+        <user>sa</user>
+        <password></password>
+    </jdbc> <!-- Generator parameters -->
+    <generator>
+        <name>org.jooq.codegen.JavaGenerator</name>
+        <strategy>
+            <name>org.jooq.codegen.DefaultGeneratorStrategy</name>
+        </strategy>
+        <database>
+            <name>org.jooq.meta.h2.H2Database</name>
+            <includes>.*</includes>
+<!--            <excludes>pg_.* | pt_.* | .*\_drop.* | \bdblink(|_.*)\b</excludes>-->
+<!--            <schemata>-->
+<!--                <schema>-->
+<!--                    <inputSchema>wems</inputSchema>-->
+<!--                </schema>-->
+<!--            </schemata>-->
+            <unsignedTypes>false</unsignedTypes>
+        </database>
+        <target>
+            <packageName>spring.data.jdbc</packageName>
+            <directory>target/generated-sources/jooq</directory>
+        </target>
+        <generate>
+            <indexes>true</indexes>
+            <relations>true</relations>
+            <javaTimeTypes>true</javaTimeTypes>
+            <springAnnotations>true
+            </springAnnotations>
+            <generatedAnnotation>true</generatedAnnotation>
+        </generate>
+    </generator>
+</configuration>
