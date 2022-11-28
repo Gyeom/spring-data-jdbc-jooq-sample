@@ -10,6 +10,7 @@ import java.util.Objects;
 
 import static spring.data.jdbc.tables.Answer.ANSWER;
 import static spring.data.jdbc.tables.Question.QUESTION;
+import static spring.data.jdbc.tables.Tag.TAG;
 
 @RequiredArgsConstructor
 public class QuestionJooqRepositoryImpl implements QuestionJooqRepository {
@@ -35,8 +36,15 @@ public class QuestionJooqRepositoryImpl implements QuestionJooqRepository {
                         .where(ANSWER.QUESTION_ID.eq(questionId))
                         .fetch().into(AnswerResponse.class);
 
+        List<String> tags =
+                dsl.select(TAG.NAME)
+                        .from(TAG)
+                        .where(TAG.QUESTION_ID.eq(questionId))
+                        .fetch().into(String.class);
+
         if (Objects.nonNull(questionResponse)) {
             questionResponse.addAnswerResponse(answerResponses);
+            questionResponse.addTagResponse(tags);
         }
 
         return questionResponse;

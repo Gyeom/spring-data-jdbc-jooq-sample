@@ -11,6 +11,8 @@ import spring.data.jdbc.global.AcceptanceTest;
 import spring.data.jdbc.question.dto.QuestionResponse;
 import spring.data.jdbc.user.dto.UserResponse;
 
+import java.util.Arrays;
+
 import static spring.data.jdbc.answer.AnswerAcceptanceStep.등록된_답변;
 import static spring.data.jdbc.channel.ChannelAcceptanceStep.등록된_채널;
 import static spring.data.jdbc.question.QuestionAcceptanceStep.*;
@@ -33,7 +35,7 @@ public class QuestionAcceptanceTest extends AcceptanceTest {
     void createQuestion() {
         // when
         ExtractableResponse<Response> response =
-                등록된_질문(등록된_채널.getId(), "OPEN", "title", "content", 등록된_유저.getId());
+                질문_생성_요청(등록된_채널.getId(), "OPEN", "title", "content", 등록된_유저.getId(), Arrays.asList("태그1", "태그2"));
 
         // then
         응답상태_검증(response, HttpStatus.CREATED);
@@ -43,8 +45,8 @@ public class QuestionAcceptanceTest extends AcceptanceTest {
     @Test
     void getQuestions() {
         // given
-        등록된_질문(등록된_채널.getId(), "OPEN", "title", "content", 등록된_유저.getId()).as(QuestionResponse.class);
-        등록된_질문(등록된_채널.getId(), "OPEN", "title2", "content2", 등록된_유저.getId()).as(QuestionResponse.class);
+        등록된_질문(등록된_채널.getId(), "OPEN", "title", "content", 등록된_유저.getId(), Arrays.asList("태그1", "태그2")).as(QuestionResponse.class);
+        등록된_질문(등록된_채널.getId(), "OPEN", "title2", "content2", 등록된_유저.getId(), Arrays.asList("태그1", "태그2")).as(QuestionResponse.class);
 
         // when
         ExtractableResponse<Response> response = 질문_목록_조회_요청(등록된_채널.getId());
@@ -58,10 +60,10 @@ public class QuestionAcceptanceTest extends AcceptanceTest {
     void getQuestion() {
         // given
         QuestionResponse questionResponse1 =
-                등록된_질문(등록된_채널.getId(), "OPEN", "title", "content", 등록된_유저.getId()).as(QuestionResponse.class);
-        등록된_답변(questionResponse1.getId(), "content1", "gyeom");
-        등록된_답변(questionResponse1.getId(), "content2", "gyeom");
-        등록된_답변(questionResponse1.getId(), "content3", "gyeom");
+                등록된_질문(등록된_채널.getId(), "OPEN", "title", "content", 등록된_유저.getId(), Arrays.asList("태그1", "태그2")).as(QuestionResponse.class);
+        등록된_답변(questionResponse1.getId(), "content1", 등록된_유저.getId());
+        등록된_답변(questionResponse1.getId(), "content2", 등록된_유저.getId());
+        등록된_답변(questionResponse1.getId(), "content3", 등록된_유저.getId());
 
         // when
         ExtractableResponse<Response> response = 질문_목록_조회_요청(questionResponse1.getId());
@@ -75,7 +77,7 @@ public class QuestionAcceptanceTest extends AcceptanceTest {
     void updateQuestion() {
         // given
         ExtractableResponse<Response> createResponse =
-                등록된_질문(등록된_채널.getId(), "OPEN", "title", "content", 등록된_유저.getId());
+                등록된_질문(등록된_채널.getId(), "OPEN", "title", "content", 등록된_유저.getId(), Arrays.asList("태그1", "태그2"));
 
         // when
         ExtractableResponse<Response> response =

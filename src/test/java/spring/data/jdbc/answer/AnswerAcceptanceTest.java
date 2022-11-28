@@ -11,6 +11,8 @@ import spring.data.jdbc.global.AcceptanceTest;
 import spring.data.jdbc.question.dto.QuestionResponse;
 import spring.data.jdbc.user.dto.UserResponse;
 
+import java.util.Arrays;
+
 import static spring.data.jdbc.answer.AnswerAcceptanceStep.답변_생성_요청;
 import static spring.data.jdbc.answer.AnswerAcceptanceStep.등록된_답변;
 import static spring.data.jdbc.channel.ChannelAcceptanceStep.등록된_채널;
@@ -34,9 +36,9 @@ public class AnswerAcceptanceTest extends AcceptanceTest {
     @Test
     void createAnswer() {
         // given
-        QuestionResponse questionResponse = 등록된_질문(등록된_채널.getId(), "OPEN", "title", "content", 등록된_유저.getId()).as(QuestionResponse.class);
-        등록된_답변(questionResponse.getId(), "content1", "gyeom");
-        등록된_답변(questionResponse.getId(), "content2", "gyeom");
+        QuestionResponse questionResponse = 등록된_질문(등록된_채널.getId(), "OPEN", "title", "content", 등록된_유저.getId(), Arrays.asList("태그1", "태그2")).as(QuestionResponse.class);
+        등록된_답변(questionResponse.getId(), "content1", 등록된_유저.getId());
+        등록된_답변(questionResponse.getId(), "content2", 등록된_유저.getId());
 
         // when
         ExtractableResponse<Response> response =

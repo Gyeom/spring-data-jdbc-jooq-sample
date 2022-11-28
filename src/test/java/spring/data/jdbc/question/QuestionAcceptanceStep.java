@@ -8,18 +8,19 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class QuestionAcceptanceStep {
     public static ExtractableResponse<Response> 등록된_질문(Long channelId, String status,
-                                                                String title, String content, String writer) {
-        return 질문_생성_요청(channelId, status, title, content, writer);
+                                                                String title, String content, String writer, List<String> tags) {
+        return 질문_생성_요청(channelId, status, title, content, writer, tags);
     }
 
     public static ExtractableResponse<Response> 질문_생성_요청(Long channelId, String status,
-                                                            String title, String content, String writer) {
+                                                            String title, String content, String writer, List<String> tags) {
 
         Map<String, Object> params = new HashMap<>();
         params.put("channelId", channelId);
@@ -27,6 +28,7 @@ public class QuestionAcceptanceStep {
         params.put("title", title);
         params.put("content", content);
         params.put("writer", writer);
+        params.put("tags", tags);
 
         //@formatter:off
         return RestAssured.given()

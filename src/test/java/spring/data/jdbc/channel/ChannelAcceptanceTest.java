@@ -10,6 +10,8 @@ import spring.data.jdbc.global.AcceptanceTest;
 import spring.data.jdbc.question.dto.QuestionResponse;
 import spring.data.jdbc.user.dto.UserResponse;
 
+import java.util.Arrays;
+
 import static spring.data.jdbc.channel.ChannelAcceptanceStep.*;
 import static spring.data.jdbc.question.QuestionAcceptanceStep.등록된_질문;
 import static spring.data.jdbc.question.QuestionAcceptanceStep.응답상태_검증;
@@ -53,8 +55,8 @@ public class ChannelAcceptanceTest extends AcceptanceTest {
         // given
         UserResponse userResponse = 등록된_유저("daegyeom123", "gyeom").as(UserResponse.class);
         ChannelResponse channelResponse = 등록된_채널("채널1", "description1", userResponse.getId()).as(ChannelResponse.class);
-        등록된_질문(channelResponse.getId(), "OPEN", "title", "content", userResponse.getId()).as(QuestionResponse.class);
-        등록된_질문(channelResponse.getId(), "OPEN", "title2", "content2", userResponse.getId()).as(QuestionResponse.class);
+        등록된_질문(channelResponse.getId(), "OPEN", "title", "content", userResponse.getId(), Arrays.asList("태그1", "태그2")).as(QuestionResponse.class);
+        등록된_질문(channelResponse.getId(), "OPEN", "title2", "content2", userResponse.getId(), Arrays.asList("태그1", "태그2")).as(QuestionResponse.class);
 
         // when
         ExtractableResponse<Response> response = 채널_조회_요청(channelResponse.getId());

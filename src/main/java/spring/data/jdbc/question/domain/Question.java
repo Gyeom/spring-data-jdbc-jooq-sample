@@ -7,11 +7,15 @@ import lombok.ToString;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Version;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
+import org.springframework.data.relational.core.mapping.Column;
+import org.springframework.data.relational.core.mapping.MappedCollection;
 import spring.data.jdbc.channel.domain.Channel;
 import spring.data.jdbc.user.domain.User;
 
 import javax.validation.constraints.*;
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 
 @Builder
 @Getter
@@ -44,6 +48,13 @@ public class Question {
     @PastOrPresent
     @Builder.Default
     private Instant createdAt = Instant.now();
+
+    @MappedCollection(idColumn = "QUESTION_ID", keyColumn = "ID")
+    @Builder.Default
+    private List<Tag> tags = new ArrayList<>();
+
+    @Column("QUESTION_ID")
+    private Like like;
 
     public void changeInfo(final String title, final String content, final Status status) {
         this.title = title;
